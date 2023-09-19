@@ -1,12 +1,32 @@
 import 'package:flutter/material.dart';
 
+//arquivo exclusivo p/ colocar o código da página da lista de tarefas
 class TodoListPage extends StatelessWidget {
   const TodoListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.yellow,
+    return Scaffold(
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16), //espaçamento de todos os lados
+          child: TextField(
+            decoration: InputDecoration(
+              labelText: 'E-mail',
+              hintText: 'exemplo@exemplo.com',
+              errorText: null, 
+              prefixText: 'R\$ ',
+              suffixText: 'cm',
+            ),
+            //obscureText: true,
+            keyboardType: TextInputType.emailAddress,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              color: Colors.purple,
+            )
+          ),
+        ),
+      ),
     );
   }
 }
