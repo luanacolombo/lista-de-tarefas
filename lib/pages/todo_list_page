@@ -20,7 +20,8 @@ class TodoListPage extends StatelessWidget {
                 decoration: InputDecoration(
                 labelText: 'E-mail',
                 ),
-                onChanged: onChanged, //não precisa usar o controller
+                onChanged: onChanged, //não precisa usar o controller 
+                onSubmitted: onSubmitted,
               ),
               ElevatedButton(
                 onPressed: login, 
@@ -38,6 +39,10 @@ class TodoListPage extends StatelessWidget {
   }
 
   void onChanged(String text) {
+
+  }
+
+  void onSubmitted(String text) {
 
   }
 
