@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 
 //arquivo exclusivo p/ colocar o código da página da lista de tarefas
 class TodoListPage extends StatelessWidget {
-  TodoListPage({Key? key}) : super(key: key);
-
-  final TextEditingController emailController = TextEditingController();
+  const TodoListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,38 +10,26 @@ class TodoListPage extends StatelessWidget {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          child: Row(
             children: [
-              TextField(
-                controller: emailController,
-                decoration: InputDecoration(
-                labelText: 'E-mail',
+               Expanded(
+                 child: TextField(
+                  decoration: InputDecoration(
+                     border: OutlineInputBorder(),
+                     labelText: 'Adiciona uma tarefa',
+                      hintText: 'Ex. Estudar Flutter',
+                 ),
                 ),
-                onChanged: onChanged, //não precisa usar o controller 
-                onSubmitted: onSubmitted,
               ),
+              SizedBox(width: 8),
               ElevatedButton(
-                onPressed: login, 
-                child: Text('Entrar'),
-              ) 
+                onPressed: () {},
+               child: Text('+'),
+              ),
             ],
-          ),
+         ),
         ),
       ),
     );
   }
-
-  void login() {
-
-  }
-
-  void onChanged(String text) {
-
-  }
-
-  void onSubmitted(String text) {
-
-  }
-
 }
