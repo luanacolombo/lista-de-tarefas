@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: //home é o parâmetro que especifica a tela inicial do app
           TodoListPage(),
     );
