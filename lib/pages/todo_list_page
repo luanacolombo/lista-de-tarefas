@@ -24,10 +24,17 @@ class TodoListPage extends StatelessWidget {
               SizedBox(width: 8),
               ElevatedButton(
                 onPressed: () {},
-               child: Text('+'),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xff00d7f3), //cor personalizada, inicia com 0xff seguido da cor desejada
+                  padding: EdgeInsets.all(14),
+                ),
+                child: Icon(
+                  Icons.add, //icone de adicionar (botão com um +)
+                  size: 30,
+                ),
               ),
             ],
-         ),
+          ),
         ),
       ),
     );
