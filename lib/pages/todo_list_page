@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 
 //arquivo exclusivo p/ colocar o código da página da lista de tarefas
-class TodoListPage extends StatelessWidget {
+class TodoListPage extends StatefulWidget {
   const TodoListPage({Key? key}) : super(key: key);
+
+  @override
+  State<TodoListPage> createState() => _TodoListPageState();
+}
+
+class _TodoListPageState extends State<TodoListPage> {
+  final TextEditingController todoController = TextEditingController(); //controlador p/ pegar o texto do campo de texto
+
+  List<String> todos = []; //lista de strings, cada string é o título de uma tarefa
 
   @override
   Widget build(BuildContext context) {
@@ -17,16 +26,23 @@ class TodoListPage extends StatelessWidget {
                 children: [
                   Expanded(
                     child: TextField(
+                      controller: todoController,
                       decoration: InputDecoration(
                        border: OutlineInputBorder(),
-                       labelText: 'Adiciona uma tarefa',
+                       labelText: 'Adicione uma tarefa',
                        hintText: 'Ex. Estudar Flutter',
                       ),
                     ),
                   ),
                   SizedBox(width: 8),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      String text = todoController.text; //le o texto do campo de texto
+                      setState(() { //atualiza a tela
+                        todos.add(text); //add na lista
+                      });
+                      todoController.clear(); //após add a tarefa ele limpa o campo de texto
+                    },
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xff00d7f3), //cor personalizada, inicia com 0xff seguido da cor desejada
                       padding: EdgeInsets.all(14),
@@ -39,20 +55,16 @@ class TodoListPage extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 16),
-              ListView(
-                shrinkWrap: true,
-                children: [
-                  ListTile( //item da lista
-                    title: Text('Tarefa 1'),
-                    subtitle: Text('20/11/2020'),
-                    leading: Icon(Icons.save, size: 30,), //item de salvar do lado esquerdo
-                  ),
-                  ListTile( //item da lista
-                    title: Text('Tarefa 2'),
-                    subtitle: Text('21/11/2020'),
-                    leading: Icon(Icons.person, size: 30,), //item de pessoa do lado esquerdo
-                  ),
-                ],
+              Flexible( //faz a lista ocupar o máximo de altura que ela pode ocupar
+                child: ListView( //entra aqui depois de atualizar a tela no setState 
+                  shrinkWrap: true,
+                  children: [
+                    for(String todo in todos) //para cada tarefa na lista de tarefas, add um listTile
+                      ListTile( //item da lista
+                        title: Text(todo),
+                      ),
+                  ],
+                ),
               ),
               SizedBox(height: 16),
               Row(
