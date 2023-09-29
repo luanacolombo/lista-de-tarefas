@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/widgets/todo_list_item';
+import 'package:todo_list/models/todo';
 
 //arquivo exclusivo p/ colocar o código da página da lista de tarefas
 class TodoListPage extends StatefulWidget {
@@ -12,7 +13,7 @@ class TodoListPage extends StatefulWidget {
 class _TodoListPageState extends State<TodoListPage> {
   final TextEditingController todoController = TextEditingController(); //controlador p/ pegar o texto do campo de texto
 
-  List<String> todos = []; //lista de strings, cada string é o título de uma tarefa
+  List<Todo> todos = []; //lista da classe Todo, cada Todo é o título de uma tarefa
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +42,11 @@ class _TodoListPageState extends State<TodoListPage> {
                     onPressed: () {
                       String text = todoController.text; //le o texto do campo de texto
                       setState(() { //atualiza a tela
-                        todos.add(text); //add na lista
+                        Todo newTodo = Todo( //cria o obj newTodo
+                          title: text,
+                          dateTime: DateTime.now(),
+                        );
+                        todos.add(newTodo); //add na lista
                       });
                       todoController.clear(); //após add a tarefa ele limpa o campo de texto
                     },
@@ -61,9 +66,9 @@ class _TodoListPageState extends State<TodoListPage> {
                 child: ListView( //entra aqui depois de atualizar a tela no setState 
                   shrinkWrap: true,
                   children: [
-                    for(String todo in todos) //para cada tarefa na lista de tarefas, add um listTile
+                    for(Todo todo in todos) //passa por cada um dos obj
                       TodoListItem(
-                        title: todo,
+                        todo: todo, //passa o obj por completo pra dentro do TodoListItem
                       ),
                   ],
                 ),

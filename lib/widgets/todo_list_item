@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list/models/todo';
+import 'package:intl/intl.dart';
 
 class TodoListItem extends StatelessWidget {
-  const TodoListItem({ Key? key, required this.title}) : super(key: key); //construtor
+  const TodoListItem({ Key? key, required this.todo}) : super(key: key); //construtor
 
-  final String title; //recebe o título por parâmetro
+  final Todo todo; //recebe o título por parâmetro
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +19,19 @@ class TodoListItem extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('20/11/2015', style: TextStyle(
-            fontSize: 12,
-          ),),
-          Text(title, style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),),
+          Text(
+            DateFormat('dd/MM/yyyy - HH:mm').format(todo.dateTime), //acessa a data e hora e bota na tela formatado
+            style: TextStyle(
+              fontSize: 12,
+            ),
+          ),
+          Text(
+            todo.title, //acessa o titulo e bota na tela
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ],
       ),
     );
