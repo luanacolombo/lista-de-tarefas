@@ -14,6 +14,8 @@ class _TodoListPageState extends State<TodoListPage> {
   final TextEditingController todoController = TextEditingController(); //controlador p/ pegar o texto do campo de texto
 
   List<Todo> todos = []; //lista da classe Todo, cada Todo é o título de uma tarefa
+  Todo? deletedTodo; //obj Todo
+  int? deletedTodoPos; //armazana a posição
 
   @override
   Widget build(BuildContext context) {
@@ -101,9 +103,32 @@ class _TodoListPageState extends State<TodoListPage> {
     );
   }
 
-  void onDelete(Todo todo) { //função que recebe um todo
+  void onDelete(Todo todo) { //função que deleta um todo
+    //saber qual tarefa será removida e a posição dela na lista
+    deletedTodo = todo; //salva o deletedTodo na variável
+    deletedTodoPos = todos.indexOf(todo); //indice do elemento (posição na lista) 
+    
     setState(() { //atualiza a página e
       todos.remove(todo); //remove o todo
     });
+
+    ScaffoldMessenger.of(context).clearSnackBars(); //remove o snackBar atual, remove qualquer snackBar que esteja sendo exibido e vai exibir o novo debaixo
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Tarefa ${todo.title} foi removida com sucesso!',
+          style: TextStyle(color: Color(0xff060708)),),
+        backgroundColor: Colors.white,
+        action: SnackBarAction(
+          label: 'Desfazer',
+          textColor: const Color(0xff00d7f3),
+          onPressed: () {
+            setState((){
+              todos.insert(deletedTodoPos!, deletedTodo!); //faz com que o item deletado volte p/ posição que estava
+            });
+          },
+        ),
+        duration: const Duration(seconds: 5), //duração da snackBar
+      ),
+    );
   }
 }
