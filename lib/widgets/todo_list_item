@@ -4,48 +4,54 @@ import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 //aqui inserimos o que vai em cada item da lista
 class TodoListItem extends StatelessWidget {
-  const TodoListItem({ Key? key, required this.todo}) : super(key: key); //construtor
+  const TodoListItem({ Key? key, required this.todo, required this.onDelete,}) : super(key: key); //construtor
 
   final Todo todo; //recebe o título por parâmetro
+  final Function(Todo) onDelete; //recebe a função de delete por parâmetro
 
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4), //quanto maior o número + arredondado
-          color: Colors.grey[200],
-        ),
-        margin: const EdgeInsets.symmetric(vertical: 2),
-        padding: const EdgeInsets.all(16),  
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              DateFormat('dd/MM/yyyy - HH:mm').format(todo.dateTime), //acessa a data e hora e bota na tela formatado
-              style: TextStyle(
-               fontSize: 12,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Slidable(
+        child: Container(
+          decoration: BoxDecoration(
+           borderRadius: BorderRadius.circular(4), //quanto maior o número + arredondado
+            color: Colors.grey[200],
+          ),
+          padding: const EdgeInsets.all(16),  
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                DateFormat('dd/MM/yyyy - HH:mm').format(todo.dateTime), //acessa a data e hora e bota na tela formatado
+                style: TextStyle(
+                 fontSize: 12,
+                ),
               ),
-           ),
-           Text(
-             todo.title, //acessa o titulo e bota na tela
-             style: TextStyle(
-               fontSize: 16,
-               fontWeight: FontWeight.w600,
-             ),
-           ),
-         ],
-       ),
-     ), 
-     actionExtentRatio: 0.25, //usa 25% da largura do item
-     actionPane: const SlidableDrawerActionPane(), //ação de arrastar o item para o lado
-     secondaryActions: [
-      IconSlideAction( //funções da ação de deslizar o item
-        color: Colors.red, //cor do botão de deletar
-        icon: Icons.delete, //botão de deletar
-        onTap: () {},
+              Text(
+                todo.title, //acessa o titulo e bota na tela
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ), 
+        actionExtentRatio: 0.25, //usa 25% da largura do item
+        actionPane: const SlidableDrawerActionPane(), //ação de arrastar o item para o lado
+        secondaryActions: [
+          IconSlideAction( //funções da ação de deslizar o item
+            color: Colors.red, //cor do botão de deletar
+            icon: Icons.delete, //botão de deletar
+            caption: 'Deletar', //texto do botão 
+            onTap: () { //chama a função de deletar
+              onDelete(todo);
+            },
+          ),
+        ],
       ),
-     ],
     ); 
   }
 }

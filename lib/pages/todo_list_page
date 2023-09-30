@@ -67,8 +67,9 @@ class _TodoListPageState extends State<TodoListPage> {
                   shrinkWrap: true,
                   children: [
                     for(Todo todo in todos) //passa por cada um dos obj
-                      TodoListItem(
+                      TodoListItem( //passa pro widget filho
                         todo: todo, //passa o obj por completo pra dentro do TodoListItem
+                        onDelete: onDelete, //passa o obj de delete pra dentro do TodoListItem
                       ),
                   ],
                 ),
@@ -98,5 +99,11 @@ class _TodoListPageState extends State<TodoListPage> {
       ),
     ),
     );
+  }
+
+  void onDelete(Todo todo) { //função que recebe um todo
+    setState(() { //atualiza a página e
+      todos.remove(todo); //remove o todo
+    });
   }
 }
