@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/models/todo';
 import 'package:intl/intl.dart';
-
+import 'package:flutter_slidable/flutter_slidable.dart';
+//aqui inserimos o que vai em cada item da lista
 class TodoListItem extends StatelessWidget {
   const TodoListItem({ Key? key, required this.todo}) : super(key: key); //construtor
 
@@ -9,31 +10,42 @@ class TodoListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4), //quanto maior o número + arredondado
-        color: Colors.grey[200],
+    return Slidable(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4), //quanto maior o número + arredondado
+          color: Colors.grey[200],
+        ),
+        margin: const EdgeInsets.symmetric(vertical: 2),
+        padding: const EdgeInsets.all(16),  
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              DateFormat('dd/MM/yyyy - HH:mm').format(todo.dateTime), //acessa a data e hora e bota na tela formatado
+              style: TextStyle(
+               fontSize: 12,
+              ),
+           ),
+           Text(
+             todo.title, //acessa o titulo e bota na tela
+             style: TextStyle(
+               fontSize: 16,
+               fontWeight: FontWeight.w600,
+             ),
+           ),
+         ],
+       ),
+     ), 
+     actionExtentRatio: 0.25, //usa 25% da largura do item
+     actionPane: const SlidableDrawerActionPane(), //ação de arrastar o item para o lado
+     secondaryActions: [
+      IconSlideAction( //funções da ação de deslizar o item
+        color: Colors.red, //cor do botão de deletar
+        icon: Icons.delete, //botão de deletar
+        onTap: () {},
       ),
-      margin: const EdgeInsets.symmetric(vertical: 2),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            DateFormat('dd/MM/yyyy - HH:mm').format(todo.dateTime), //acessa a data e hora e bota na tela formatado
-            style: TextStyle(
-              fontSize: 12,
-            ),
-          ),
-          Text(
-            todo.title, //acessa o titulo e bota na tela
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ],
-      ),
-    );
+     ],
+    ); 
   }
 }
