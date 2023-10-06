@@ -20,6 +20,8 @@ class _TodoListPageState extends State<TodoListPage> {
   Todo? deletedTodo; //obj Todo
   int? deletedTodoPos; //armazana a posição
 
+  String? errorText;
+
   @override
   void initState() { //método chamado sempre na criação do statefull
     super.initState();
@@ -50,19 +52,38 @@ class _TodoListPageState extends State<TodoListPage> {
                        border: OutlineInputBorder(),
                        labelText: 'Adicione uma tarefa',
                        hintText: 'Ex. Estudar Flutter',
-                      ),
+                       errorText: errorText,
+                       focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xff00d7f3),
+                          width: 2,
+                        )
+                       ),
+                       labelStyle: TextStyle(
+                        color: Color(0xff00d7f3)
+                       )
+                      ), 
                     ),
                   ),
                   SizedBox(width: 8),
                   ElevatedButton(
                     onPressed: () {
                       String text = todoController.text; //le o texto do campo de texto
+                      
+                      if(text.isEmpty) {
+                        setState(() {
+                          errorText = 'O titulo não pode ser vazio!';
+                        });
+                        return; 
+                      }
+
                       setState(() { //atualiza a tela
                         Todo newTodo = Todo( //cria o obj newTodo
                           title: text,
                           dateTime: DateTime.now(),
                         );
                         todos.add(newTodo); //add na lista
+                        errorText = null;
                       });
                       todoController.clear(); //após add a tarefa ele limpa o campo de texto
                       todoRepository.saveTodoList(todos); //salva a lista de todos
