@@ -3,16 +3,21 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_list/models/todo';
 
+const todoListKey = 'todo_list';
+
 class TodoRepository {
-    //primeiro inicializa
-    TodoRepository() {
-        SharedPreferences.getInstance().then((value) => sharedPreferences = value);
-    }
-    //depois utiliza
     late SharedPreferences sharedPreferences; //será inicializada no futuro, garante que só vamos utilizar a instancia depois de inicializar
     
+    Future<List<Todo> getTodoList() async { //obtem a lista
+      sharedPreferences = await SharedPreferences.getInstance(); //obtem a instancia do sharedPreferences
+      final String jsonString = sharedPreferences.getString(todoListKey) ?? '[]'; //le o que está armazenado dentro do sharedPreference
+      final List jsonDecoded = json.decode(jsonString) as List; //irá retornar um mapa ou uma lista 
+      return jsonDecoded.map((e) => Todo.fromJson(e)).toList(); //comando map vai cada objeto/itens da lista e vai converter p/ um objeto do tipo Todo
+    } //'[]' jSon que simboliza uma lista vazia
+
+    //salva a lista de todos no formato Json
     void saveTodoList(List<Todo> todos) { //irá receber uma lista de todos
       final String jsonString = json.encode(todos); //converte p/ um obj Jason. Transforma a lista de tarefas em texto
-      sharedPreferences.setString('todo_list', jsonString);
+      sharedPreferences.setString(todoListKey, jsonString);
     }
 }
