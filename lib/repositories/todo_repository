@@ -8,7 +8,7 @@ const todoListKey = 'todo_list';
 class TodoRepository {
     late SharedPreferences sharedPreferences; //será inicializada no futuro, garante que só vamos utilizar a instancia depois de inicializar
     
-    Future<List<Todo> getTodoList() async { //obtem a lista
+    Future<List<Todo>> getTodoList() async { //obtem a lista
       sharedPreferences = await SharedPreferences.getInstance(); //obtem a instancia do sharedPreferences
       final String jsonString = sharedPreferences.getString(todoListKey) ?? '[]'; //le o que está armazenado dentro do sharedPreference
       final List jsonDecoded = json.decode(jsonString) as List; //irá retornar um mapa ou uma lista 

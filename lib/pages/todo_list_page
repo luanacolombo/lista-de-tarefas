@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/widgets/todo_list_item';
+import 'package:todo_list/repositories/todo_repository';
 import 'package:todo_list/models/todo';
 
 //arquivo exclusivo p/ colocar o código da página da lista de tarefas
@@ -15,8 +16,20 @@ class _TodoListPageState extends State<TodoListPage> {
   final TodoRepository todoRepository = TodoRepository();
 
   List<Todo> todos = []; //lista da classe Todo, cada Todo é o título de uma tarefa
+
   Todo? deletedTodo; //obj Todo
   int? deletedTodoPos; //armazana a posição
+
+  @override
+  void initState() { //método chamado sempre na criação do statefull
+    super.initState();
+
+    todoRepository.getTodoList().then((value) { //acessa o repositorio, pede a lista de todos, assim que retornar a lista de todos, vai armazenar a lista de todos 
+      setState(() {
+        todos = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +65,7 @@ class _TodoListPageState extends State<TodoListPage> {
                         todos.add(newTodo); //add na lista
                       });
                       todoController.clear(); //após add a tarefa ele limpa o campo de texto
-                      todoRepository.saveTodoList(todos); //salta a lista de todos
+                      todoRepository.saveTodoList(todos); //salva a lista de todos
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xff00d7f3), //cor personalizada, inicia com 0xff seguido da cor desejada
@@ -113,6 +126,7 @@ class _TodoListPageState extends State<TodoListPage> {
     setState(() { //atualiza a página e
       todos.remove(todo); //remove o todo
     });
+    todoRepository.saveTodoList(todos); //salva a lista de todos
 
     ScaffoldMessenger.of(context).clearSnackBars(); //remove o snackBar atual, remove qualquer snackBar que esteja sendo exibido e vai exibir o novo debaixo
     ScaffoldMessenger.of(context).showSnackBar(
@@ -127,6 +141,7 @@ class _TodoListPageState extends State<TodoListPage> {
             setState((){
               todos.insert(deletedTodoPos!, deletedTodo!); //faz com que o item deletado volte p/ posição que estava
             });
+            todoRepository.saveTodoList(todos); //salva a lista de todos
           },
         ),
         duration: const Duration(seconds: 5), //duração da snackBar
@@ -165,5 +180,6 @@ class _TodoListPageState extends State<TodoListPage> {
     setState(() { //atualiza a página e
       todos.clear(); //remove a lista
     }); 
+    todoRepository.saveTodoList(todos); //salva a lista de todos
   }
 }
