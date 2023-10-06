@@ -12,6 +12,7 @@ class TodoListPage extends StatefulWidget {
 
 class _TodoListPageState extends State<TodoListPage> {
   final TextEditingController todoController = TextEditingController(); //controlador p/ pegar o texto do campo de texto
+  final TodoRepository todoRepository = TodoRepository();
 
   List<Todo> todos = []; //lista da classe Todo, cada Todo é o título de uma tarefa
   Todo? deletedTodo; //obj Todo
@@ -51,6 +52,7 @@ class _TodoListPageState extends State<TodoListPage> {
                         todos.add(newTodo); //add na lista
                       });
                       todoController.clear(); //após add a tarefa ele limpa o campo de texto
+                      todoRepository.saveTodoList(todos); //salta a lista de todos
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xff00d7f3), //cor personalizada, inicia com 0xff seguido da cor desejada
